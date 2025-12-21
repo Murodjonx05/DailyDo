@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h1>Find Work</h1>
+        <p class="subtitle">Browse the latest freelance opportunities</p>
+    </div>
+
+    <div class="work-layout">
+        <aside class="work-sidebar">
+            <div class="filter-card">
+                <h3>Filters</h3>
+                <form method="get" class="search-form">
+                    <div class="form-group">
+                        <input type="text" name="q" class="search-input" placeholder="Search keywords..."
+                            value="{{ request.GET.q }}">
+                    </div>
+                    <!-- Add more filters here later -->
+                    <button type="submit" class="action-btn primary-btn full-width">Search</button>
+                </form>
+            </div>
+
+            {% if user.role == 'client' %}
+            <div class="cta-card">
+                <h3>Need work done?</h3>
+                <p>Post a job and hire top talent.</p>
+                <a href="{% url 'work_create' %}" class="action-btn primary-btn full-width">Post a Job</a>
+            </div>
+            {% endif %}
+        </aside>
+
+        <main class="work-list">
+            {% for work in works %}
+            <div class="work-card">
+                <div class="work-header">
+                    <h2 class="work-title">
+                        <a href="{% url 'work_detail' work.pk %}">{{ work.name }}</a>
+                    </h2>
+                    <span class="work-date">{{ work.created_at|timesince }} ago</span>
+                </div>
+
+                <div class="work-meta">
+                    <span class="badge type-badge">{{ work.get_work_type_display }}</span>
+                    {% if work.price_text %}
+                    <span class="badge price-badge">{{ work.price_text }}</span>
+                    {% endif %}
+                    {% if work.location %}
+                    <span class="meta-item"><i class="ph ph-map-pin"></i> {{ work.location }}</span>
+                    {% endif %}
+                </div>
+
+                <p class="work-excerpt">{{ work.short_name }}</p>
+
+                <div class="work-footer">
+                    {% if work.tags.all %}
+                    <div class="work-tags">
+                        {% for tag in work.tags.all %}
+                        <span class="tag">{{ tag.name }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <span class="client-info">Posted by {{ work.client.username }}</span>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                <i class="ph ph-briefcase"></i>
+                <h3>No jobs found</h3>
+                <p>Try adjusting your search criteria.</p>
+            </div>
+            {% endfor %}
+
+            {% if is_paginated %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+
+                    {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+            {% endif %}
+        </main>
+    </div>
+</div>
+{% endblock %}

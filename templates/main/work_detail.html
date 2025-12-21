@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-container">
+    <div class="work-detail-layout">
+        <main class="work-content">
+            <header class="work-detail-header">
+                <h1 class="work-title-lg">{{ work.name }}</h1>
+                <div class="work-meta-lg">
+                    <span class="meta-item"><i class="ph ph-clock"></i> Posted {{ work.created_at|timesince }}
+                        ago</span>
+                    {% if work.location %}
+                    <span class="meta-item"><i class="ph ph-map-pin"></i> {{ work.location }}</span>
+                    {% endif %}
+                </div>
+            </header>
+
+            <section class="work-description">
+                <h3>Description</h3>
+                <p>{{ work.short_name }}</p>
+                <!-- Using short_name as main desc for now, ideally upgrade 'other_text' or relations -->
+
+                {% if work.other_text %}
+                <div class="additional-details">
+                    <h4>Additional Details</h4>
+                    <p>{{ work.other_text }}</p>
+                </div>
+                {% endif %}
+            </section>
+
+            {% if work.tags.all %}
+            <section class="work-skills">
+                <h3>Skills Required</h3>
+                <div class="work-tags">
+                    {% for tag in work.tags.all %}
+                    <span class="tag">{{ tag.name }}</span>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+        </main>
+
+        <aside class="work-sidebar-detail">
+            <div class="sidebar-card">
+                {% if work.price_text %}
+                <div class="sidebar-section">
+                    <label>Budget</label>
+                    <div class="price-highlight">{{ work.price_text }}</div>
+                </div>
+                {% endif %}
+
+                <div class="sidebar-section">
+                    <label>Job Type</label>
+                    <div class="value">{{ work.get_work_type_display }}</div>
+                </div>
+
+                <div class="sidebar-section">
+                    <label>Client</label>
+                    <div class="client-profile">
+                        <div class="client-avatar-placeholder">{{ work.client.username|first|upper }}</div>
+                        <div class="client-details">
+                            <span class="client-name">{{ work.client.username }}</span>
+                            <span class="client-meta">Joined {{ work.client.date_joined|date:"M Y" }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-area">
+                    {% if user.is_authenticated %}
+                    {% if user.role == 'freelancer' %}
+                    <a href="#" class="action-btn primary-btn full-width">Apply Now</a>
+                    {% elif user == work.client %}
+                    <a href="#" class="action-btn secondary-btn full-width">Edit Job</a>
+                    {% endif %}
+                    {% else %}
+                    <a href="{% url 'login' %}?next={{ request.path }}" class="action-btn primary-btn full-width">Log In
+                        to Apply</a>
+                    {% endif %}
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/registration.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card" style="max-width: 500px;">
+        <h2 class="auth-title">Create Account</h2>
+        <p class="auth-subtitle">Join us as a Freelancer or Client</p>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="success-message">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+
+            {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                <small style="color: grey; font-size: 0.8rem;">{{ field.help_text }}</small>
+                {% endif %}
+                {% if field.errors %}
+                <span class="field-error" style="color: #ef4444;">{{ field.errors }}</span>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <button type="submit" class="action-btn primary-btn"
+                style="width: 100%; justify-content: center; margin-top: 1rem;">
+                Get Started
+            </button>
+        </form>
+
+        <div class="form-footer">
+            <p>Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

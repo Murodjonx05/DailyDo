@@ -1,0 +1,58 @@
+{% load static%}
+<nav>
+
+    <div id="LEFT-SECTION" class="logo">
+        <img src="{% static 'img/logo/logo.png' %}" alt="Logo">
+    </div>
+
+    <div id="MIDDLE-SECTION" class="nav-links">
+        <div class="link-header">
+            <a href="">Plans</a>
+        </div>
+
+        <div class="link-header ">
+            <a href="">Reports</a>
+        </div>
+
+        <div class="link-header active">
+            <a href="">Forums</a>
+        </div>
+    </div>
+    <div id="RIGHT-SECTION" class="accounts">
+
+        <img src="{% static 'img/avatar/1.svg' %}" alt="Account" class="account-img">
+        <ul class="dropdown">
+            <li><a href="#"><i class="ph ph-user"></i> Profile</a></li>
+            <li><a href="#"><i class="ph ph-gear"></i> Settings</a></li>
+            <li><a href="#"><i class="ph ph-sign-out"></i> Logout</a></li>
+        </ul>
+    </div>
+
+
+</nav>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const account = document.querySelector("nav .accounts");
+        const img = account.querySelector(".account-img");
+
+        // открытие/закрытие по клику на аватарку
+        img.addEventListener("click", (e) => {
+            e.stopPropagation();
+            account.classList.toggle("open");
+        });
+
+        // закрытие при клике вне меню
+        document.addEventListener("click", (e) => {
+            if (!account.contains(e.target)) {
+                account.classList.remove("open");
+            }
+        });
+
+        // закрытие по Escape
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") account.classList.remove("open");
+        });
+    });
+
+</script>

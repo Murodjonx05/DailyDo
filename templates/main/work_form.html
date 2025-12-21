@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-container">
+    <div class="form-card-container">
+        <div class="auth-card" style="max-width: 800px; text-align: left;">
+            <h2 class="auth-title">Post a New Job</h2>
+            <p class="auth-subtitle">Provide details to find the best talent</p>
+
+            <form method="post" class="auth-form">
+                {% csrf_token %}
+
+                {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <span class="field-error" style="color: #ef4444;">{{ field.errors }}</span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <div class="form-actions">
+                    <a href="{% url 'work_list' %}" class="action-btn secondary-btn">Cancel</a>
+                    <button type="submit" class="action-btn primary-btn">Post Job</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
