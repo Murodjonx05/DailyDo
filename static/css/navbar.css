@@ -5,10 +5,13 @@
     --nav-font-size: 1.1rem;
     --nav-font-weight: 600;
     --nav-transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    --dropdown-min-width: 120px;
     --dropdown-offset: 8px;
     --dropdown-radius: 0.75rem;
     --nav-z: 1000;
     --nav-scrolled-scale: 0.85;
+    --dropdown-bg: var(--nav-bg);
+    --dropdown-shadow: none;
 }
 
 :root[data-theme="dark"] {
@@ -17,8 +20,6 @@
     --nav-link-header-bg: rgba(45, 45, 45, 0.5);
     --nav-link-color: #6b6b6b;
     --nav-border: rgba(255, 255, 255, 0.06);
-    --dropdown-bg: var(--nav-bg);
-    --dropdown-shadow: none;
 }
 
 :root[data-theme="light"],
@@ -28,8 +29,6 @@
     --nav-link-header-bg: rgba(220, 220, 220, 0.6);
     --nav-link-color: #919191;
     --nav-border: rgba(0, 0, 0, 0.08);
-    --dropdown-bg: var(--nav-bg);
-    --dropdown-shadow: none;
 }
 
 /* NAV */
@@ -52,26 +51,24 @@ nav {
     z-index: var(--nav-z);
 }
 
-#LEFT-SECTION {
-    padding-inline-start: var(--nav-p-inline);
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
+#LEFT-SECTION,
 #RIGHT-SECTION {
     height: 100%;
     display: flex;
     align-items: center;
 }
 
-/* уменьшение при скролле */
+#LEFT-SECTION {
+    padding-inline-start: var(--nav-p-inline);
+}
+
+/* scrolled */
 nav.scrolled {
     height: calc(var(--nav-height) * var(--nav-scrolled-scale));
     background: var(--nav-scrolled-bg);
 }
 
-/* логотип и секции */
+/* logo and sections */
 nav .logo,
 nav .nav-links,
 nav .accounts {
@@ -86,6 +83,7 @@ nav .logo img {
     transition: var(--nav-transition);
     cursor: pointer;
 }
+
 nav .logo img:hover {
     transform: scale(var(--logo-scale));
 }
@@ -94,11 +92,9 @@ nav.scrolled .logo img {
     max-height: calc(var(--nav-height) * var(--nav-scrolled-scale));
 }
 
-/* nav links (pill container) */
+/* nav links */
 nav .nav-links {
     height: 100%;
-    display: flex;
-    align-items: center;
 }
 
 nav .nav-links .pill {
@@ -116,7 +112,7 @@ nav .nav-links .link-header {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.2em 1.20rem;
+    padding: 0.2em 1.2rem;
     border-radius: 99px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
@@ -133,9 +129,10 @@ nav .nav-links .link-header.active,
 nav .nav-links .link-header:focus,
 nav .nav-links .link-header:focus-visible {
     background: var(--nav-link-color);
-    transform: translateY(-1px);
+    /* transform: translateY(-1px); */
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
+
 nav .nav-links .link-header:hover a,
 nav .nav-links .link-header.active a,
 nav .nav-links .link-header:focus a,
@@ -143,12 +140,13 @@ nav .nav-links .link-header:focus-visible a {
     color: var(--nav-bg);
 }
 
-/* JavaScript-controlled hover reset for active state */
+/* hover reset for active */
 nav .nav-links .link-header.hover-reset-active {
     background: var(--nav-link-header-bg) !important;
     transform: translateY(0) !important;
     box-shadow: none !important;
 }
+
 nav .nav-links .link-header.hover-reset-active a {
     color: var(--nav-link-color) !important;
 }
@@ -165,25 +163,37 @@ nav .accounts .dropdown-container {
     height: 100%;
 }
 
-/* avatar and icons */
 nav .accounts .account-img {
     width: calc(var(--nav-height) * 0.8);
     height: calc(var(--nav-height) * 0.8);
+    border-radius: 50%;
     cursor: pointer;
-    /* border: 2px solid transparent; */
     transition: var(--nav-transition);
     display: inline-block;
     object-fit: cover;
     margin-right: var(--nav-p-inline);
 }
 
-nav .accounts .account-img {
-    border-radius: 50%;
+nav .accounts .accounts-icon-img {
+    width: calc(var(--nav-height) * 0.4);
+    height: calc(var(--nav-height) * 0.4);
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: var(--nav-transition);
+    display: inline-block;
+    object-fit: cover;
 }
 
-nav .accounts .accounts-icon-img {
-    width: calc(var(--nav-height) * 0.3);
-    height: calc(var(--nav-height) * 0.3);
+nav .accounts .account-img:hover,
+nav .accounts .accounts-icon-img:hover {
+    scale: 1.1;
+}
+
+nav .accounts .account-img:focus-visible,
+nav .accounts .accounts-icon-img:focus-visible {
+    border-color: var(--nav-link-color);
+    outline: 2px solid var(--nav-link-color);
+    outline-offset: 2px;
 }
 
 nav.scrolled .accounts .account-img,
@@ -197,47 +207,31 @@ nav.scrolled .accounts .accounts-icon-img {
     height: calc(var(--nav-height) * var(--nav-scrolled-scale) * 0.5);
 }
 
-nav .accounts .account-img:hover,
-nav .accounts .accounts-icon-img:hover {
-    animation-delay: 0.2s;
-    animation: scale 0.5s ease-in-out;
-    scale: 1.1;
-}
-
-nav .accounts .account-img:focus-visible,
-nav .accounts .accounts-icon-img:focus-visible {
-    border-color: var(--nav-link-color);
-    outline: 2px solid var(--nav-link-color);
-    outline-offset: 2px;
-}
-
 .account-dropdown {
-    border-radius: 0 0 0 var(--dropdown-radius)!important;
+    border-radius: 0 0 0 var(--dropdown-radius) !important;
 }
-
 
 /* dropdown base */
 nav .dropdown-container .dropdown {
     position: absolute;
-    top: 100%; /* Align exactly with navbar bottom */
+    top: 100%;
     right: 0;
     background: var(--dropdown-bg);
     border-radius: 0 0 var(--dropdown-radius) var(--dropdown-radius);
     list-style: none;
     margin: 0;
     padding: 0.35rem;
-    min-width: 200px;
+    min-width: var(--dropdown-min-width);
     box-shadow: var(--dropdown-shadow);
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-8px) scale(0.95);
+    transform: translateY(calc(-1 * var(--dropdown-offset))) scale(0.95);
     transform-origin: top right;
     transition: var(--nav-transition);
     pointer-events: none;
     z-index: var(--nav-z);
 }
 
-/* Invisible bridge to prevent closing when moving mouse from icon to dropdown */
 nav .dropdown-container .dropdown::before {
     content: '';
     position: absolute;
@@ -247,7 +241,6 @@ nav .dropdown-container .dropdown::before {
     height: 20px;
 }
 
-/* открытое состояние */
 nav .dropdown-container.open .dropdown {
     opacity: 1;
     visibility: visible;
@@ -272,9 +265,7 @@ nav .dropdown-container .dropdown li a {
     width: 100%;
 }
 
-nav .dropdown-container .dropdown li:hover {
-    background: var(--nav-link-header-bg);
-}
+nav .dropdown-container .dropdown li:hover,
 nav .dropdown-container .dropdown li:focus-within,
 nav .dropdown-container .dropdown li a:focus-visible {
     background: var(--nav-link-header-bg);
@@ -290,32 +281,28 @@ nav .dropdown-container .dropdown li a:focus-visible {
         --nav-p-inline: 0.5rem;
         --nav-height: 48px;
     }
-    /* Mobile dropdown styles */
     nav .logo {
         position: relative;
     }
-
     nav .logo .mobile-dropdown {
         position: absolute;
-        top: 100%; /* Align exactly with navbar bottom */
+        top: 100%;
         left: 0;
         background: var(--dropdown-bg);
-        border-radius: 0 0 var(--dropdown-radius) 0 ;
+        border-radius: 0 0 var(--dropdown-radius) 0;
         list-style: none;
         margin: 0;
         padding: 0.35rem;
-        min-width: 200px;
+        min-width: var(--dropdown-min-width);
         box-shadow: var(--dropdown-shadow);
         opacity: 0;
         visibility: hidden;
-        transform: translateY(-8px) scale(0.95);
+        transform: translateY(calc(-1 * var(--dropdown-offset))) scale(0.95);
         transform-origin: top left;
         transition: var(--nav-transition);
         pointer-events: none;
         z-index: calc(var(--nav-z) + 10);
-        /* border: 1px solid var(--nav-border); */
     }
-
     nav .logo .mobile-dropdown::before {
         content: '';
         position: absolute;
@@ -324,26 +311,22 @@ nav .dropdown-container .dropdown li a:focus-visible {
         right: 0;
         height: 20px;
     }
-
     nav .logo.mobile-open .mobile-dropdown {
         opacity: 1;
         visibility: visible;
         transform: translateY(0) scale(1);
         pointer-events: auto;
     }
-
     nav .logo .mobile-dropdown ul {
         margin: 0;
         padding: 0;
         list-style: none;
     }
-
     nav .logo .mobile-dropdown li {
         border-radius: 0.5rem;
         transition: var(--nav-transition);
         margin: 0.15rem 0;
     }
-
     nav .logo .mobile-dropdown li a {
         text-decoration: none;
         color: var(--nav-link-color);
@@ -354,34 +337,18 @@ nav .dropdown-container .dropdown li a:focus-visible {
         width: 100%;
         transition: var(--nav-transition);
     }
-
     nav .logo .mobile-dropdown li:hover {
         background: var(--nav-link-header-bg);
     }
-
     nav .logo a {
         display: block;
     }
-
     nav .logo img {
         cursor: pointer;
     }
 }
 
-
-nav .accounts .accounts-icon-img{
-    width: calc(var(--nav-height) * 0.4);
-    height: calc(var(--nav-height) * 0.4);
-    /* border-radius: 50%; */
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: var(--nav-transition);
-    display: inline-block;
-    object-fit: cover;
-}
-
-/* PC mode - hide mobile dropdown */
-@media only screen and (min-width: 769px) {
+@media (min-width: 769px) {
     nav .logo .mobile-dropdown {
         display: none !important;
     }

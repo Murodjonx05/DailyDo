@@ -1,15 +1,22 @@
 {% load static %}
-<nav id="main-navbar">
 
+<nav id="main-navbar">
     <div id="LEFT-SECTION" class="logo">
         <a href="{% url 'index' %}">
-            <img src="{% static 'img/logo/logo.png' %}" alt="Logo">
+            <picture>
+                <source srcset="{% static 'img/logo/logo-32.webp' %}" media="(max-height: 32px)">
+                <source srcset="{% static 'img/logo/logo-64.webp' %}" media="(max-height: 64px)">
+                <source srcset="{% static 'img/logo/logo-128.webp' %}" media="(max-height: 128px)">
+                <source srcset="{% static 'img/logo/logo-256.webp' %}" media="(max-height: 256px)">
+                <source srcset="{% static 'img/logo/logo-512.webp' %}" media="(max-height: 512px)">
+                <img src="{% static 'img/logo/logo-64.webp' %}" alt="Logo" class="logo">
+            </picture>
         </a>
         <div class="mobile-dropdown">
             <ul class="dropdown">
-                <li><a href="">Plans</a></li>
-                <li><a href="">Reports</a></li>
-                <li><a href="">Forums</a></li>
+                <li><a href=""><i class="ph ph-calendar-check"></i>Plans</a></li>
+                <li><a href=""><i class="ph ph-note"></i>Reports</a></li>
+                <li><a href=""><i class="ph ph-wechat-logo"></i>Forums</a></li>
             </ul>
         </div>
     </div>
@@ -17,15 +24,14 @@
     <div id="MIDDLE-SECTION" class="nav-links">
         <div class="pill">
             <div class="link-header">
-                <a href="">Plans</a>
+                <a href=""><i class="ph ph-calendar-check"></i>Plans</a>
             </div>
 
             <div class="link-header active">
-                <a href="">Reports</a>
+                <a href=""><i class="ph ph-note"></i>Reports</a>
             </div>
-
             <div class="link-header">
-                <a href="">Forums</a>
+                <a href=""><i class="ph ph-wechat-logo"></i>Forums</a>
             </div>
         </div>
     </div>
@@ -41,10 +47,10 @@
 
         <div class="dropdown-container">
             <img src="{% static 'img/color.svg' %}" alt="Theme" class="accounts-icon-img">
-            <ul class="dropdown">
-                <li><a href="#"><i class="ph ph-sun"></i> Light</a></li>
-                <li><a href="#"><i class="ph ph-moon"></i> Dark</a></li>
-                <li><a href="#"><i class="ph ph-circle-half"></i> Auto</a></li>
+            <ul id="THEME-DROPDOWN" class="dropdown">
+                <li><a data-theme="light" href="#"><i class="ph ph-sun"></i> Light</a></li>
+                <li><a data-theme="dark" href="#"><i class="ph ph-moon"></i> Dark</a></li>
+                <li><a data-theme="auto" href="#"><i class="ph ph-circle-half"></i> Auto</a></li>
             </ul>
         </div>
 
@@ -57,6 +63,4 @@
             </ul>
         </div>
     </div>
-
-
 </nav>

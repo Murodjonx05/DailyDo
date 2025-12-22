@@ -1,15 +1,14 @@
 :root[data-theme="dark"] {
     --primary-body-color: #242525;
     --text-primary: #f8fafc;
+    --icon-color:#7f9bd6;
 }
 
 :root[data-theme="light"] {
     --primary-body-color: #ffffff;
     --text-primary: #1e293b;
-
+    --icon-color: #272727;
 }
-
-
 
 * {
     box-sizing: border-box;
@@ -22,4 +21,9 @@ body {
     background-color: var(--primary-body-color);
     color: var(--text-primary);
     line-height: 1.5;
+}
+
+i {
+    color: var(--icon-color);
+    padding: 0 5px;
 }

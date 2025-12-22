@@ -1,6 +1,7 @@
 {% load static %}
 
 <head>
+    {% include 'base/critical.html' %} <!-- critical theme load -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DailyDO</title>
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" href="{% static 'css/registration.css'%}">
     {% block extra_head %}{% endblock %}
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- <script src="https://unpkg.com/@phosphor-icons/web"></script> -->
 
+    {% include 'base/phospor-icons.html' %}
 </head>
