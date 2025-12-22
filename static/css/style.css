@@ -1,10 +1,10 @@
 :root[data-theme="dark"] {
-    --primary-body-color: #0f172a;
+    --primary-body-color: #242525;
     --text-primary: #f8fafc;
 }
 
 :root[data-theme="light"] {
-    --primary-body-color: #bdbdbd;
+    --primary-body-color: #ffffff;
     --text-primary: #f8fafc;
 
 }

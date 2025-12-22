@@ -1,6 +1,8 @@
 from django.urls import path
 from django.contrib.auth.views import LogoutView
 from .views import Index, SignupView, CustomLoginView, WorkListView, WorkDetailView, WorkCreateView
+from django.http import JsonResponse
+
 
 urlpatterns = [
     path('', Index.as_view(), name='index'),
