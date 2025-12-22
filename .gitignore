@@ -1,5 +1,11 @@
+# environments
 venv
 
+# db and logs
 db.sqlite3
 firebase-debug.log
+
+# trash files
 __pycache__
+.trunk
+.trunk/*

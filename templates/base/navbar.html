@@ -1,8 +1,8 @@
-{% load static%}
+{% load static %}
 <nav id="main-navbar">
 
     <div id="LEFT-SECTION" class="logo">
-        <a href="#">
+        <a href="{% url 'index' %}">
             <img src="{% static 'img/logo/logo.png' %}" alt="Logo">
         </a>
         <div class="mobile-dropdown">
@@ -30,13 +30,32 @@
         </div>
     </div>
     <div id="RIGHT-SECTION" class="accounts">
+        <div class="dropdown-container">
+            <img src="{% static 'img/language.svg' %}" alt="Language" class="accounts-icon-img">
+            <ul class="dropdown">
+                <li><a href="#"><img src="{% static 'img/flags/uz.svg' %}" class="accounts-icon-img" alt="UZ"> UZ</a></li>
+                <li><a href="#"><img src="{% static 'img/flags/en.svg' %}" class="accounts-icon-img" alt="EN"> EN</a></li>
+                <li><a href="#"><img src="{% static 'img/flags/ru.svg' %}" class="accounts-icon-img" alt="RU"> RU</a></li>
+            </ul>
+        </div>
 
-        <img src="{% static 'img/avatar/1.svg' %}" alt="Account" class="account-img">
-        <ul class="dropdown">
-            <li><a href="#"><i class="ph ph-user"></i> Profile</a></li>
-            <li><a href="#"><i class="ph ph-gear"></i> Settings</a></li>
-            <li><a href="#"><i class="ph ph-sign-out"></i> Logout</a></li>
-        </ul>
+        <div class="dropdown-container">
+            <img src="{% static 'img/color.svg' %}" alt="Theme" class="accounts-icon-img">
+            <ul class="dropdown">
+                <li><a href="#"><i class="ph ph-sun"></i> Light</a></li>
+                <li><a href="#"><i class="ph ph-moon"></i> Dark</a></li>
+                <li><a href="#"><i class="ph ph-circle-half"></i> Auto</a></li>
+            </ul>
+        </div>
+
+        <div class="dropdown-container">
+            <img src="{% static 'img/avatar/1.svg' %}" alt="Account" class="account-img">
+            <ul class="dropdown account-dropdown">
+                <li><a href="#"><i class="ph ph-user"></i> Profile</a></li>
+                <li><a href="#"><i class="ph ph-gear"></i> Settings</a></li>
+                <li><a href="#"><i class="ph ph-sign-out"></i> Logout</a></li>
+            </ul>
+        </div>
     </div>
 
 

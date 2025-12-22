@@ -60,7 +60,6 @@ nav {
 }
 
 #RIGHT-SECTION {
-    padding-inline-end: var(--nav-p-inline);
     height: 100%;
     display: flex;
     align-items: center;
@@ -78,6 +77,7 @@ nav .nav-links,
 nav .accounts {
     display: flex;
     align-items: center;
+    gap: 1.5rem;
 }
 
 nav .logo img {
@@ -97,16 +97,16 @@ nav.scrolled .logo img {
 /* nav links (pill container) */
 nav .nav-links {
     height: 100%;
-    gap: 0.25rem;
     display: flex;
     align-items: center;
 }
 
 nav .nav-links .pill {
     background: var(--nav-link-header-bg);
-    padding: 5px;
+    padding: 0.3125rem;
+    gap: 0.3125rem;
     border-radius: 99px;
-    border: 0.5px solid var(--nav-border);
+    border: 1px solid var(--nav-border);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -158,39 +158,71 @@ nav .accounts {
     position: relative;
 }
 
-/* avatar */
+nav .accounts .dropdown-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+/* avatar and icons */
 nav .accounts .account-img {
     width: calc(var(--nav-height) * 0.8);
     height: calc(var(--nav-height) * 0.8);
-    border-radius: 50%;
     cursor: pointer;
-    border: 2px solid transparent;
+    /* border: 2px solid transparent; */
     transition: var(--nav-transition);
     display: inline-block;
     object-fit: cover;
+    margin-right: var(--nav-p-inline);
 }
 
-nav.scrolled .accounts .account-img {
+nav .accounts .account-img {
+    border-radius: 50%;
+}
+
+nav .accounts .accounts-icon-img {
+    width: calc(var(--nav-height) * 0.3);
+    height: calc(var(--nav-height) * 0.3);
+}
+
+nav.scrolled .accounts .account-img,
+nav.scrolled .accounts .accounts-icon-img {
     width: calc(var(--nav-height) * var(--nav-scrolled-scale) * 0.8);
     height: calc(var(--nav-height) * var(--nav-scrolled-scale) * 0.8);
 }
 
-nav .accounts .account-img:hover {
-    border-color: var(--nav-link-color);
+nav.scrolled .accounts .accounts-icon-img {
+    width: calc(var(--nav-height) * var(--nav-scrolled-scale) * 0.5);
+    height: calc(var(--nav-height) * var(--nav-scrolled-scale) * 0.5);
 }
-nav .accounts .account-img:focus-visible {
+
+nav .accounts .account-img:hover,
+nav .accounts .accounts-icon-img:hover {
+    animation-delay: 0.2s;
+    animation: scale 0.5s ease-in-out;
+    scale: 1.1;
+}
+
+nav .accounts .account-img:focus-visible,
+nav .accounts .accounts-icon-img:focus-visible {
     border-color: var(--nav-link-color);
     outline: 2px solid var(--nav-link-color);
     outline-offset: 2px;
 }
 
+.account-dropdown {
+    border-radius: 0 0 0 var(--dropdown-radius)!important;
+}
+
+
 /* dropdown base */
-nav .accounts .dropdown {
+nav .dropdown-container .dropdown {
     position: absolute;
     top: 100%; /* Align exactly with navbar bottom */
     right: 0;
     background: var(--dropdown-bg);
-    border-radius: 0 0 0 var(--dropdown-radius);
+    border-radius: 0 0 var(--dropdown-radius) var(--dropdown-radius);
     list-style: none;
     margin: 0;
     padding: 0.35rem;
@@ -203,11 +235,10 @@ nav .accounts .dropdown {
     transition: var(--nav-transition);
     pointer-events: none;
     z-index: var(--nav-z);
-    /* border: 1px solid var(--nav-border);r */
 }
 
-/* Invisible bridge to prevent closing when moving mouse from avatar to dropdown */
-nav .accounts .dropdown::before {
+/* Invisible bridge to prevent closing when moving mouse from icon to dropdown */
+nav .dropdown-container .dropdown::before {
     content: '';
     position: absolute;
     top: -20px;
@@ -217,7 +248,7 @@ nav .accounts .dropdown::before {
 }
 
 /* открытое состояние */
-nav .accounts.open .dropdown {
+nav .dropdown-container.open .dropdown {
     opacity: 1;
     visibility: visible;
     transform: translateY(0) scale(1);
@@ -225,12 +256,13 @@ nav .accounts.open .dropdown {
 }
 
 /* dropdown items */
-nav .accounts .dropdown li {
+nav .dropdown-container .dropdown li {
     border-radius: 0.5rem;
     transition: var(--nav-transition);
     margin: 0.15rem 0;
 }
-nav .accounts .dropdown li a {
+
+nav .dropdown-container .dropdown li a {
     text-decoration: none;
     color: var(--nav-link-color);
     padding: 0.65rem 0.9rem;
@@ -239,11 +271,12 @@ nav .accounts .dropdown li a {
     gap: 0.6rem;
     width: 100%;
 }
-nav .accounts .dropdown li:hover {
+
+nav .dropdown-container .dropdown li:hover {
     background: var(--nav-link-header-bg);
 }
-nav .accounts .dropdown li:focus-within,
-nav .accounts .dropdown li a:focus-visible {
+nav .dropdown-container .dropdown li:focus-within,
+nav .dropdown-container .dropdown li a:focus-visible {
     background: var(--nav-link-header-bg);
     outline: none;
 }
@@ -279,7 +312,7 @@ nav .accounts .dropdown li a:focus-visible {
         transform-origin: top left;
         transition: var(--nav-transition);
         pointer-events: none;
-        z-index: var(--nav-z);
+        z-index: calc(var(--nav-z) + 10);
         /* border: 1px solid var(--nav-border); */
     }
 
@@ -333,6 +366,18 @@ nav .accounts .dropdown li a:focus-visible {
     nav .logo img {
         cursor: pointer;
     }
+}
+
+
+nav .accounts .accounts-icon-img{
+    width: calc(var(--nav-height) * 0.4);
+    height: calc(var(--nav-height) * 0.4);
+    /* border-radius: 50%; */
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: var(--nav-transition);
+    display: inline-block;
+    object-fit: cover;
 }
 
 /* PC mode - hide mobile dropdown */

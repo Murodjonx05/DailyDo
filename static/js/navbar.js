@@ -21,35 +21,48 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     }
 
-    // Account dropdown with cleanup
-    const account = document.querySelector("nav .accounts");
-    if (account) {
-        const img = account.querySelector(".account-img");
-        if (img) {
-            const accountController = new AbortController();
+    // Generalized dropdown handling for all dropdown containers
+    const dropdownContainers = document.querySelectorAll("nav .dropdown-container");
+
+    dropdownContainers.forEach(container => {
+        const trigger = container.querySelector(".account-img, .accounts-icon-img");
+
+        if (trigger) {
+            const controller = new AbortController();
 
             // Open/Close on click
-            img.addEventListener("click", (e) => {
+            trigger.addEventListener("click", (e) => {
                 e.stopPropagation();
-                account.classList.toggle("open");
-            });
+
+                // Close other dropdowns
+                dropdownContainers.forEach(otherContainer => {
+                    if (otherContainer !== container) {
+                        otherContainer.classList.remove("open");
+                    }
+                });
+
+                // Toggle current dropdown
+                container.classList.toggle("open");
+            }, { signal: controller.signal });
 
             // Close on click outside
             document.addEventListener("click", (e) => {
-                if (!account.contains(e.target)) {
-                    account.classList.remove("open");
+                if (!container.contains(e.target)) {
+                    container.classList.remove("open");
                 }
-            }, { signal: accountController.signal });
+            }, { signal: controller.signal });
 
             // Close on Escape
             document.addEventListener("keydown", (e) => {
-                if (e.key === "Escape") account.classList.remove("open");
-            }, { signal: accountController.signal });
+                if (e.key === "Escape") {
+                    container.classList.remove("open");
+                }
+            }, { signal: controller.signal });
 
             // Store controller for potential cleanup
-            account._dropdownController = accountController;
+            container._dropdownController = controller;
         }
-    }
+    });
 
     // Scroll Effect with throttling
     if (navbar) {
