@@ -112,7 +112,7 @@ nav .nav-links .link-header {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.2em 1.2rem;
+    padding: 0.2em 0.4rem;
     border-radius: 99px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
@@ -273,7 +273,7 @@ nav .dropdown-container .dropdown li a:focus-visible {
 }
 
 /* responsive */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     nav .nav-links {
         display: none;
     }
@@ -348,7 +348,7 @@ nav .dropdown-container .dropdown li a:focus-visible {
     }
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1024px) {
     nav .logo .mobile-dropdown {
         display: none !important;
     }

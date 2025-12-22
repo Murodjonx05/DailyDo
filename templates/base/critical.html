@@ -1,4 +1,25 @@
 {% load static %}
+<!-- Critical CSS: hide untranslated content to prevent flash -->
+<style>
+    [data-translate] {
+        /* visibility: hidden; */
+        display: inline-block;
+        text-align: center;
+    }
+    /* Fixed widths based on data-width attribute */
+    [data-translate][data-width="5"] { min-width: 5ch; }
+    [data-translate][data-width="6"] { min-width: 6ch; }
+    [data-translate][data-width="7"] { min-width: 7ch; }
+    [data-translate][data-width="8"] { min-width: 8ch; }
+    [data-translate][data-width="9"] { min-width: 9ch; }
+    [data-translate][data-width="10"] { min-width: 10ch; }
+    [data-translate][data-width="12"] { min-width: 12ch; }
+    [data-translate][data-width="15"] { min-width: 15ch; }
+
+    .translated [data-translate] {
+        visibility: visible;
+    }
+</style>
 <!-- theme critical load for get default color scheme -->
 <script src="{% static 'js/theme/criticalThemeLoad.js' %}"></script>
-
+<script type="module" src="{% static 'js/language/translate.js' %}"></script>
