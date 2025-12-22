@@ -4,7 +4,6 @@
     --nav-p-inline: 1.5rem;
     --nav-font-size: 1.1rem;
     --nav-font-weight: 600;
-    --nav-link-hover-color: linear-gradient(135deg, #0a84ff 0%, #ff2d55 100%);
     --nav-transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
     --dropdown-offset: 8px;
     --dropdown-radius: 0.75rem;
@@ -18,8 +17,8 @@
     --nav-link-header-bg: rgba(45, 45, 45, 0.5);
     --nav-link-color: #6b6b6b;
     --nav-border: rgba(255, 255, 255, 0.06);
-    --dropdown-bg: #1e1e1e;
-    --dropdown-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    --dropdown-bg: var(--nav-bg);
+    --dropdown-shadow: none;
 }
 
 :root[data-theme="light"],
@@ -29,8 +28,8 @@
     --nav-link-header-bg: rgba(220, 220, 220, 0.6);
     --nav-link-color: #919191;
     --nav-border: rgba(0, 0, 0, 0.08);
-    --dropdown-bg: #ffffff;
-    --dropdown-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    --dropdown-bg: var(--nav-bg);
+    --dropdown-shadow: none;
 }
 
 /* NAV */
@@ -105,17 +104,19 @@ nav .nav-links {
 
 nav .nav-links .pill {
     background: var(--nav-link-header-bg);
-    padding: 0.25rem;
+    padding: 5px;
     border-radius: 99px;
-    border: 1px solid var(--nav-border);
+    border: 0.5px solid var(--nav-border);
     display: flex;
+    justify-content: center;
     align-items: center;
 }
 
 nav .nav-links .link-header {
     display: flex;
     align-items: center;
-    padding: 0.2em 1.25rem;
+    justify-content: center;
+    padding: 0.2em 1.20rem;
     border-radius: 99px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
@@ -142,24 +143,14 @@ nav .nav-links .link-header:focus-visible a {
     color: var(--nav-bg);
 }
 
-/* При наведении на любой элемент, убираем active у всех, кроме самого наведенного */
-nav .nav-links:hover .link-header.active:not(:hover) {
-    background: var(--nav-link-header-bg);
-    transform: translateY(0);
-    box-shadow: none;
+/* JavaScript-controlled hover reset for active state */
+nav .nav-links .link-header.hover-reset-active {
+    background: var(--nav-link-header-bg) !important;
+    transform: translateY(0) !important;
+    box-shadow: none !important;
 }
-nav .nav-links:hover .link-header.active:not(:hover) a {
-    color: var(--nav-link-color);
-}
-
-/* Но если наводим на сам active элемент, он должен оставаться активным */
-nav .nav-links .link-header.active:hover {
-    background: var(--nav-link-color);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-nav .nav-links .link-header.active:hover a {
-    color: var(--nav-bg);
+nav .nav-links .link-header.hover-reset-active a {
+    color: var(--nav-link-color) !important;
 }
 
 /* ACCOUNTS / DROPDOWN */
@@ -199,7 +190,7 @@ nav .accounts .dropdown {
     top: 100%; /* Align exactly with navbar bottom */
     right: 0;
     background: var(--dropdown-bg);
-    border-radius: var(--dropdown-radius);
+    border-radius: 0 0 0 var(--dropdown-radius);
     list-style: none;
     margin: 0;
     padding: 0.35rem;
@@ -211,8 +202,8 @@ nav .accounts .dropdown {
     transform-origin: top right;
     transition: var(--nav-transition);
     pointer-events: none;
-    z-index: calc(var(--nav-z) + 10);
-    border: 1px solid var(--nav-border);
+    z-index: var(--nav-z);
+    /* border: 1px solid var(--nav-border);r */
 }
 
 /* Invisible bridge to prevent closing when moving mouse from avatar to dropdown */
@@ -276,7 +267,7 @@ nav .accounts .dropdown li a:focus-visible {
         top: 100%; /* Align exactly with navbar bottom */
         left: 0;
         background: var(--dropdown-bg);
-        border-radius: var(--dropdown-radius);
+        border-radius: 0 0 var(--dropdown-radius) 0 ;
         list-style: none;
         margin: 0;
         padding: 0.35rem;
@@ -288,8 +279,8 @@ nav .accounts .dropdown li a:focus-visible {
         transform-origin: top left;
         transition: var(--nav-transition);
         pointer-events: none;
-        z-index: calc(var(--nav-z) + 10);
-        border: 1px solid var(--nav-border);
+        z-index: var(--nav-z);
+        /* border: 1px solid var(--nav-border); */
     }
 
     nav .logo .mobile-dropdown::before {
