@@ -9,3 +9,6 @@ firebase-debug.log
 __pycache__
 .trunk
 .trunk/*
+.trunk/configs/.markdownlint.yaml
+.trunk/trunk.yaml
+.trunk/configs/ruff.toml
