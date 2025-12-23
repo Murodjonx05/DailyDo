@@ -1,66 +1,55 @@
 document.addEventListener('DOMContentLoaded', function () {
     const navbar = document.getElementById('main-navbar');
 
-    // Utility function for throttling
+    // Simplified throttle function
     function throttle(func, delay) {
-        let timeoutId;
-        let lastExecTime = 0;
+        let lastCall = 0;
         return function (...args) {
-            const currentTime = Date.now();
-
-            if (currentTime - lastExecTime > delay) {
+            const now = Date.now();
+            if (now - lastCall >= delay) {
+                lastCall = now;
                 func.apply(this, args);
-                lastExecTime = currentTime;
-            } else {
-                clearTimeout(timeoutId);
-                timeoutId = setTimeout(() => {
-                    func.apply(this, args);
-                    lastExecTime = Date.now();
-                }, delay - (currentTime - lastExecTime));
             }
         };
     }
 
-    // Generalized dropdown handling for all dropdown containers
-    const dropdownContainers = document.querySelectorAll("nav .dropdown-container");
+    // Optimized dropdown handling using event delegation
+    function handleDropdownClick(e) {
+        const trigger = e.target.closest(".account-img, .accounts-icon-img");
+        if (!trigger) return;
 
-    dropdownContainers.forEach(container => {
-        const trigger = container.querySelector(".account-img, .accounts-icon-img");
+        const container = trigger.closest(".dropdown-container");
+        if (!container) return;
 
-        if (trigger) {
-            const controller = new AbortController();
+        e.stopPropagation();
 
-            // Open/Close on click
-            trigger.addEventListener("click", (e) => {
-                e.stopPropagation();
+        // Close all dropdowns first
+        document.querySelectorAll("nav .dropdown-container.open").forEach(openContainer => {
+            openContainer.classList.remove("open");
+        });
 
-                // Close other dropdowns
-                dropdownContainers.forEach(otherContainer => {
-                    if (otherContainer !== container) {
-                        otherContainer.classList.remove("open");
-                    }
-                });
+        // Toggle clicked dropdown
+        container.classList.toggle("open");
+    }
 
-                // Toggle current dropdown
-                container.classList.toggle("open");
-            }, { signal: controller.signal });
+    // Single click listener for all dropdown triggers using event delegation
+    document.addEventListener("click", handleDropdownClick);
 
-            // Close on click outside
-            document.addEventListener("click", (e) => {
-                if (!container.contains(e.target)) {
-                    container.classList.remove("open");
-                }
-            }, { signal: controller.signal });
+    // Single click listener to close dropdowns when clicking outside
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".dropdown-container")) {
+            document.querySelectorAll("nav .dropdown-container.open").forEach(container => {
+                container.classList.remove("open");
+            });
+        }
+    });
 
-            // Close on Escape
-            document.addEventListener("keydown", (e) => {
-                if (e.key === "Escape") {
-                    container.classList.remove("open");
-                }
-            }, { signal: controller.signal });
-
-            // Store controller for potential cleanup
-            container._dropdownController = controller;
+    // Single keydown listener for Escape key
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            document.querySelectorAll("nav .dropdown-container.open").forEach(container => {
+                container.classList.remove("open");
+            });
         }
     });
 
