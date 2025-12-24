@@ -1,63 +1,82 @@
 (function() {
-  function safeGet(k){ try{ return localStorage.getItem(k) } catch(e){ return null } }
-  function safeSet(k,v){ try{ localStorage.setItem(k,v) } catch(e){} }
-
   const root = document.documentElement;
-  const mql = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
-  let mqlListener = null;
+  const mql = window.matchMedia('(prefers-color-scheme: dark)');
+  let currentListener = null;
 
-  function applyAuto() {
-    root.dataset.theme = mql && mql.matches ? 'dark' : 'light';
+  // Безопасное чтение/запись
+  const storage = {
+    get: () => { try { return localStorage.getItem('theme') } catch(e){ return null } },
+    set: (v) => { try { localStorage.setItem('theme', v) } catch(e){} }
+  };
+
+  function updateActiveState(theme) {
+    const dropdown = document.getElementById('THEME-DROPDOWN');
+    if (!dropdown) return;
+    const items = dropdown.querySelectorAll('a[data-theme]');
+    items.forEach(el => {
+      if (el.dataset.theme === theme) el.classList.add('active');
+      else el.classList.remove('active');
+    });
+  }
+
+  function handleAutoChange(e) {
+    if (storage.get() === 'auto') {
+      root.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+    }
   }
 
   function setTheme(theme) {
-    if (theme === 'auto') {
-      applyAuto();
-      safeSet('theme','auto');
+    storage.set(theme);
 
-      if (mql && mqlListener) {
-        try{ mql.removeEventListener('change', mqlListener) }
-        catch(e){ try{ mql.removeListener(mqlListener) } catch(e){} }
-      }
-      mqlListener = e => { root.dataset.theme = e.matches ? 'dark' : 'light' };
-      if (mql) {
-        try{ mql.addEventListener('change', mqlListener) }
-        catch(e){ try{ mql.addListener(mqlListener) } catch(e){} }
-      }
-    } else {
-      root.dataset.theme = theme;
-      safeSet('theme', theme);
-      if (mql && mqlListener) {
-        try{ mql.removeEventListener('change', mqlListener) }
-        catch(e){ try{ mql.removeListener(mqlListener) } catch(e){} }
-        mqlListener = null;
-      }
+    // Убираем старый слушатель, если был
+    if (currentListener) {
+      mql.removeEventListener('change', currentListener);
+      currentListener = null;
     }
 
-    // подсветка активного пункта меню
+    if (theme === 'auto') {
+      // При auto — ставим текущую системную и вешаем слушатель
+      root.setAttribute('data-theme', mql.matches ? 'dark' : 'light');
+      currentListener = handleAutoChange;
+      mql.addEventListener('change', currentListener);
+    } else {
+      // Жесткая тема
+      root.setAttribute('data-theme', theme);
+    }
+
+    updateActiveState(theme);
+  }
+
+  function init() {
+    const saved = storage.get() || 'auto';
+
+    // Восстанавливаем слушатель для auto, но НЕ переключаем тему,
+    // если она уже выставлена criticalThemeLoad.js верно (чтобы избежать мерцания).
+    // Но так как critical скрипт простой, мы тут можем просто вызвать setTheme,
+    // чтобы привязать слушатели. Операция setAttribute идемпотентна, если значение то же.
+    setTheme(saved);
+
+    // Делегирование кликов
     const dropdown = document.getElementById('THEME-DROPDOWN');
     if (dropdown) {
-      dropdown.querySelectorAll('a[data-theme]').forEach(a => {
-        a.classList.toggle('active', a.getAttribute('data-theme') === theme);
+      dropdown.addEventListener('click', (e) => {
+        const link = e.target.closest('a[data-theme]');
+        if (link) {
+          e.preventDefault();
+          setTheme(link.dataset.theme);
+        }
       });
     }
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    const dropdown = document.getElementById('THEME-DROPDOWN');
-    if (!dropdown) return;
+  // Запуск
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 
-    dropdown.addEventListener('click', function(e) {
-      const a = e.target.closest && e.target.closest('a[data-theme]');
-      if (!a) return;
-      e.preventDefault();
-      setTheme(a.getAttribute('data-theme'));
-    });
-
-    // при загрузке: берём сохранённое значение или auto по умолчанию
-    setTheme(safeGet('theme') || 'auto');
-  });
-
+  // Экспорт
   window.setTheme = setTheme;
 })();
 
