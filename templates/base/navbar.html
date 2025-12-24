@@ -57,10 +57,16 @@
         <div class="dropdown-container">
             <img src="{% static 'img/avatar/1.svg' %}" alt="Account" class="account-img">
             <ul class="dropdown account-dropdown">
+                {% if user.is_authenticated %}
                 <li><a href="#"><i class="ph ph-user"></i> <span data-translate="profile"></span></a></li>
                 <li><a href="#"><i class="ph ph-gear"></i> <span data-translate="settings"></span></a></li>
-                <li><a href="#"><i class="ph ph-sign-out"></i> <span data-translate="logout"></span></a></li>
+                <li><a href="{% url 'logout' %}"><i class="ph ph-sign-out"></i> <span data-translate="logout"></span></a></li>
+                {% else %}
+                <li><a href="{% url 'login' %}"><i class="ph ph-sign-in"></i> <span data-translate="login"></span></a></li>
+                <li><a href="{% url 'signup' %}"><i class="ph ph-user-plus"></i> <span data-translate="signup"></span></a></li>
+                {% endif %}
             </ul>
         </div>
     </div>
 </nav>
+<div id="nav-bottom"></div>

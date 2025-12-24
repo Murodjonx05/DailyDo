@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function setupMobileLogoDropdown() {
         if (!logo) return;
 
-        const isMobile = window.innerWidth <= 768;
+        const isMobile = window.innerWidth <= 1024;
         const logoLink = logo.querySelector("a");
 
         // Remove existing listeners if switching modes
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setupMobileLogoDropdown();
 
     // Responsive setup on resize using matchMedia for better performance
-    const mobileMediaQuery = window.matchMedia('(max-width: 768px)');
+    const mobileMediaQuery = window.matchMedia('(max-width: 1024px)');
     mobileMediaQuery.addEventListener('change', setupMobileLogoDropdown);
 
     // Fallback: also listen to window resize as backup

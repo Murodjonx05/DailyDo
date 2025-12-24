@@ -7,5 +7,7 @@ export const translateData = {
     "auto": {"uz": "Avtomatik", "en": "Auto", "ru": "Автоматически"},
     "profile": {"uz": "Profil", "en": "Profile", "ru": "Профиль"},
     "settings": {"uz": "Sozlamalar", "en": "Settings", "ru": "Настройки"},
-    "logout": {"uz": "Chiqish", "en": "Logout", "ru": "Выйти"}
+    "logout": {"uz": "Chiqish", "en": "Logout", "ru": "Выйти"},
+    "login": {"uz": "Kirish", "en": "Login", "ru": "Войти"},
+    "signup": {"uz": "Yaratish", "en": "Signup", "ru": "Зарегистрироваться"}
 }

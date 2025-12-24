@@ -1,13 +1,13 @@
 :root[data-theme="dark"] {
     --primary-body-color: #242525;
     --text-primary: #f8fafc;
-    --icon-color:#7f9bd6;
+    --icon-color:#a6d830;
 }
 
 :root[data-theme="light"] {
     --primary-body-color: #ffffff;
     --text-primary: #1e293b;
-    --icon-color: #272727;
+    --icon-color: #4d8eee;
 }
 
 * {

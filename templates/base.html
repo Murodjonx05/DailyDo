@@ -4,16 +4,23 @@
 
 
 {% include 'base/head.html' %}
-
+<style>
+    .main {
+        max-height: calc(100vh - var(--nav-height));
+        overflow-y: auto;
+        height: 100%;
+    }
+</style>
 
 
 
 <body role="main" aria-label="body">
     {% include 'base/navbar.html' %}
+    <main class="main">
+        {% block content %}
 
-    {% block content %}
-
-    {% endblock content %}
+        {% endblock content %}
+    </main>
 
     {% include 'base/foo.html' %}
     {% include 'base/js.html' %}
