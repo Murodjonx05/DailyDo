@@ -1,5 +1,5 @@
 {% load static %}
-<style>
+<style fetch-priority="high">
     /* 1. Базовые правила: резервируем блочную модель, но скрываем контент */
     [data-translate] {
         visibility: hidden;
@@ -47,7 +47,7 @@
     .ch-25 { min-width: 25ch; }
 </style>
 
-<script>
+<script fetch-priority="high">
     (function() {
         // 1. Быстрая загрузка настроек
         const lang = localStorage.getItem('lang') || 'uz';

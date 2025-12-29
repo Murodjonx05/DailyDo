@@ -15,8 +15,10 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" href="{% static 'css/registration.css'%}">
+    <link rel="stylesheet" href="{% static 'css/special.css'%}">
     {% block extra_head %}{% endblock %}
+    <!-- navbar into head for fast download -->
+    {% include 'base/navbar.html' %}
     <!-- <script src="https://unpkg.com/@phosphor-icons/web"></script> -->
-
     {% include 'base/phospor-icons.html' %}
 </head>

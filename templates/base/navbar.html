@@ -1,9 +1,9 @@
 {% load static %}
 
-<nav id="main-navbar" role="navigation">
+<nav class="select-blocked" id="main-navbar" role="navigation">
     <div id="LEFT-SECTION" class="logo">
         <a href="{% url 'index' %}">
-            <picture>
+            <picture fetchpriority="high">
                 <source srcset="{% static 'img/logo/logo-32.webp' %}" media="(max-height: 32px)">
                 <source srcset="{% static 'img/logo/logo-64.webp' %}" media="(max-height: 64px)">
                 <source srcset="{% static 'img/logo/logo-128.webp' %}" media="(max-height: 128px)">
