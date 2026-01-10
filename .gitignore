@@ -12,3 +12,5 @@ __pycache__
 .trunk/configs/.markdownlint.yaml
 .trunk/trunk.yaml
 .trunk/configs/ruff.toml
+
+/static/img/pictures/*

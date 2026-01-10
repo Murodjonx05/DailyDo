@@ -1,0 +1,189 @@
+{% load static %}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<style>
+    /* Главная обертка для изоляции стилей */
+    .my-slider-wrapper {
+        position: relative;
+        width: 100%;
+        line-height: 1.15;
+    }
+
+    /* Настройки Swiper для компьютеров */
+    .my-slider-wrapper .swiper {
+        width: 100%;
+        height: calc(100vh - var(--nav-height));
+    }
+
+    .my-slider-wrapper .swiper-slide img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+    }
+
+    /* Стили счетчика 1/n */
+    .my-slider-wrapper .slide-counter-overlay {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 10;
+        background: rgba(0, 0, 0, 0.6);
+        color: #ffffff;
+        padding: 6px 16px;
+        border-radius: 30px;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        pointer-events: none;
+    }
+
+    /* Стили пагинации (точки) */
+    .my-slider-wrapper .swiper-pagination-bullet {
+        background: #fff !important;
+        opacity: 0.5;
+        transition: width 0.3s ease, opacity 0.3s ease;
+    }
+
+    .my-slider-wrapper .swiper-pagination-bullet-active {
+        width: 30px !important;
+        border-radius: 4px !important;
+        opacity: 1 !important;
+    }
+
+    /* Цвет стрелок */
+    .my-slider-wrapper .swiper-button-next, 
+    .my-slider-wrapper .swiper-button-prev {
+        color: #fff !important;
+    }
+
+    /* --- Адаптивность (Mobile & Tablet) --- */
+    @media (max-width: 1024px) {
+        .my-slider-wrapper .swiper {
+            height: auto; /* Отменяем фиксированную высоту */
+            aspect-ratio: 16 / 10; /* Слайдер будет пропорционально уменьшаться */
+        }
+    }
+
+    @media (max-width: 768px) {
+        .my-slider-wrapper .swiper {
+            aspect-ratio: 4 / 3; /* На телефонах делаем чуть выше для удобства */
+        }
+        
+        .my-slider-wrapper .slide-counter-overlay {
+            top: 10px;
+            right: 10px;
+            font-size: 14px;
+            padding: 4px 12px;
+        }
+
+        /* Скрываем стрелки на мобильных устройствах, так как там удобнее свайпать пальцем */
+        .my-slider-wrapper .swiper-button-next, 
+        .my-slider-wrapper .swiper-button-prev {
+            display: none;
+        }
+    }
+
+    /* 1. Удаляем стандартные стрелки Swiper */
+.my-slider-wrapper .swiper-button-next::after, 
+.my-slider-wrapper .swiper-button-prev::after {
+    display: none !important;
+}
+
+/* 2. Стилизуем иконки Phosphor */
+.my-slider-wrapper .swiper-button-next i, 
+.my-slider-wrapper .swiper-button-prev i {
+    font-size: 60px; /* Размер иконки */
+    font-weight: 400v;
+    /* color: #ffffff;  Цвет */
+    transition: transform 0.2s ease;
+}
+
+/* 3. Эффект при наведении (опционально) */
+.my-slider-wrapper .swiper-button-next:hover i {
+    transform: translateX(3px);
+}
+
+.my-slider-wrapper .swiper-button-prev:hover i {
+    transform: translateX(-3px);
+}
+
+/* Центрирование иконки внутри кнопки */
+.my-slider-wrapper .swiper-button-next, 
+.my-slider-wrapper .swiper-button-prev {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Если хотите круглую подложку, можно добавить: */
+    /* background: rgba(255,255,255,0.1); */
+    /* width: 50px; height: 50px; border-radius: 50%; */
+}
+</style>
+
+<div class="my-slider-wrapper select-blocked">
+    <div class="swiper mySwiper">
+        <div class="slide-counter-overlay">
+            <span id="slider-current">1</span> / <span id="slider-total">0</span>
+        </div>
+
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <img src="{% static 'img/pictures/plan.png' %}" alt="Slide 1">
+            </div>
+            <div class="swiper-slide">
+                <img src="{% static 'img/pictures/2.jpg' %}" alt="Slide 2">
+            </div>
+            <div class="swiper-slide">
+                <img src="{% static 'img/pictures/3.jpg' %}" alt="Slide 3">
+            </div>
+        </div>
+
+        <div class="swiper-button-next">
+            <i class="ph ph-caret-right"></i>
+        </div>
+        <div class="swiper-button-prev">
+            <i class="ph ph-caret-left"></i>
+        </div>
+        
+        <div class="swiper-pagination"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+    (function() {
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentText = document.getElementById('slider-current');
+            const totalText = document.getElementById('slider-total');
+            
+            const swiper = new Swiper(".mySwiper", {
+                loop: true,
+                speed: 800,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                on: {
+                    init: function () {
+                        // Рассчитываем количество реальных слайдов (без клонов Swiper)
+                        const realSlidesCount = this.slides.filter(slide => !slide.classList.contains('swiper-slide-duplicate')).length;
+                        totalText.innerText = realSlidesCount;
+                    },
+                    slideChange: function () {
+                        // realIndex обновляется правильно даже при loop: true
+                        currentText.innerText = this.realIndex + 1;
+                    }
+                }
+            });
+        });
+    })();
+</script>

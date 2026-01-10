@@ -1,33 +1,15 @@
 (function() {
-  function safeGet(k){ try{ return localStorage.getItem(k) } catch(e){ return null } }
-  function safeSet(k,v){ try{ localStorage.setItem(k,v) } catch(e){} }
+  try {
+    const saved = localStorage.getItem('theme');
+    const mql = window.matchMedia('(prefers-color-scheme: dark)');
+    const sysTheme = mql.matches ? 'dark' : 'light';
 
-  const root = document.documentElement;
-  const mql = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
-
-  const stored = safeGet('theme');
-  if (!stored) {
-    // если нет сохранённого значения — используем системную тему и сохраняем auto
-    const prefers = mql ? mql.matches : false;
-    root.dataset.theme = prefers ? 'dark' : 'light';
-    safeSet('theme', 'auto');
-
-    // подписка на изменения системной темы
-    if (mql) {
-      mql.addEventListener('change', e => {
-        root.dataset.theme = e.matches ? 'dark' : 'light';
-      });
+    // Если явно сохранено 'light' или 'dark', используем.
+    // Если 'auto' или ничего нет (null) -> используем системную.
+    if (saved === 'dark' || saved === 'light') {
+      document.documentElement.setAttribute('data-theme', saved);
+    } else {
+      document.documentElement.setAttribute('data-theme', sysTheme);
     }
-  } else if (stored === 'auto') {
-    // auto: вычисляем по системной теме и подписываемся на изменения
-    root.dataset.theme = mql && mql.matches ? 'dark' : 'light';
-    if (mql) {
-      mql.addEventListener('change', e => {
-        root.dataset.theme = e.matches ? 'dark' : 'light';
-      });
-    }
-  } else {
-    // явный выбор light/dark
-    root.dataset.theme = stored;
-  }
+  } catch (e) {}
 })();
