@@ -47,7 +47,7 @@
     .ch-25 { min-width: 25ch; }
 </style>
 
-<script fetch-priority="high">
+<script>
     (function() {
         // 1. Быстрая загрузка настроек
         const lang = localStorage.getItem('lang') || 'uz';
@@ -95,8 +95,8 @@
     })();
 </script>
 
-<script priority="high" type="module" src="{% static 'js/language/translate.js' %}"></script>
-<script>
+<script type="module" fetch-priority="high" src="{% static 'js/language/translate.js' %}"></script>
+<script fetch-priority="high">
     (function() {
       try {
         const saved = localStorage.getItem('theme');

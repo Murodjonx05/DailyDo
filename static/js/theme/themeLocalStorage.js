@@ -5,8 +5,8 @@
 
   // Безопасное чтение/запись
   const storage = {
-    get: () => { try { return localStorage.getItem('theme') } catch(e){ return null } },
-    set: (v) => { try { localStorage.setItem('theme', v) } catch(e){} }
+    get: () => { try { return localStorage.getItem('theme'); } catch(e){ return null; } },
+    set: (v) => { try { localStorage.setItem('theme', v); } catch(e){} }
   };
 
   function updateActiveState(theme) {
@@ -79,4 +79,3 @@
   // Экспорт
   window.setTheme = setTheme;
 })();
-
